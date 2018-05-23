@@ -29,6 +29,11 @@ cc.Class({
         player: {
             default: null,
             type: cc.Node
+        },
+        // score label 的引用
+        scoreDisplay: {
+            default: null,
+            type: cc.Label
         }
     },
     
@@ -59,11 +64,19 @@ cc.Class({
         this.groundY = this.ground.y + this.ground.height/2;
         // 生成一个新的星星
         this.spawnNewStar();
+        // 初始化计分
+        this.score = 0;
 	},
 
     start () {
 
     },
-
+    
+	gainScore () {
+        this.score += 1;
+        // 更新 scoreDisplay Label 的文字
+        this.scoreDisplay.string = 'Score: ' + this.score.toString();
+    },
+    
     // update (dt) {},
 });
