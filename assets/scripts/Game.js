@@ -39,6 +39,8 @@ cc.Class({
         this.node.addChild(newStar);
         // 为星星设置一个随机位置
         newStar.setPosition(this.getNewStarPosition());
+        // 将 Game 组件的实例传入星星组件
+        newStar.getComponent('Star').game = this;
     },
 
     getNewStarPosition () {
