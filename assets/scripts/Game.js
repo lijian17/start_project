@@ -46,6 +46,9 @@ cc.Class({
         newStar.setPosition(this.getNewStarPosition());
         // 将 Game 组件的实例传入星星组件
         newStar.getComponent('Star').game = this;
+        // 重置计时器，根据消失时间范围随机取一个值
+        this.starDuration = this.minStarDuration + cc.random0To1() * (this.maxStarDuration - this.minStarDuration);
+        this.timer = 0;
     },
 
     getNewStarPosition () {
@@ -62,6 +65,9 @@ cc.Class({
 	onLoad () {
 		// 获取地平面的 y 轴坐标
         this.groundY = this.ground.y + this.ground.height/2;
+        // 初始化计时器
+        this.timer = 0;
+        this.starDuration = 0;
         // 生成一个新的星星
         this.spawnNewStar();
         // 初始化计分
@@ -78,5 +84,18 @@ cc.Class({
         this.scoreDisplay.string = 'Score: ' + this.score.toString();
     },
     
-    // update (dt) {},
+    gameOver () {
+        this.player.stopAllActions(); //停止 player 节点的跳跃动作
+        cc.director.loadScene('game');
+    },
+    
+	update (dt) {
+		// 每帧更新计时器，超过限度还没有生成新的星星
+        // 就会调用游戏失败逻辑
+        if (this.timer > this.starDuration) {
+            this.gameOver();
+            return;
+        }
+        this.timer += dt;
+	},
 });
